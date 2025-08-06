@@ -11,10 +11,16 @@ webserver:
   read_timeout: 5
   
 auth:
+  mode: $ACCWEB_AUTH_MODE
   timeout: $ACCWEB_TIMEOUT
   admin_password: $ACCWEB_ADMIN_PASSWORD
   moderator_password: $ACCWEB_MOD_PASSWORD
   read_only_password: $ACCWEB_RO_PASSWORD
+  oauth:
+    provider: $ACCWEB_OAUTH_PROVIDER
+    client_id: $ACCWEB_OAUTH_CLIENT_ID
+    client_secret: $ACCWEB_OAUTH_CLIENT_SECRET
+    callback_url: $ACCWEB_OAUTH_CALLBACK_URL
 
 acc:
   server_path: "/accserver"

@@ -40,13 +40,30 @@ type CORS struct {
 	Loglevel string `yaml:"loglevel"`
 }
 
+type AuthMode string
+
+const (
+	AuthModeNone     AuthMode = "none"
+	AuthModeStandard AuthMode = "standard"
+	AuthModeOAuth    AuthMode = "oauth"
+)
+
+type OAuth struct {
+	Provider     string `yaml:"provider"`
+	ClientID     string `yaml:"client_id"`
+	ClientSecret string `yaml:"client_secret"`
+	CallbackURL  string `yaml:"callback_url"`
+}
+
 type Auth struct {
-	PublicKeyPath     string         `yaml:"public_key_path"`
-	PrivateKeyPath    string         `yaml:"private_key_path"`
-	AdminPassword     string         `yaml:"admin_password"`
+	Mode             AuthMode        `yaml:"mode"`
+	PublicKeyPath    string         `yaml:"public_key_path"`
+	PrivateKeyPath   string         `yaml:"private_key_path"`
+	AdminPassword    string         `yaml:"admin_password"`
 	ModeratorPassword string         `yaml:"moderator_password"`
 	ReadOnlyPassword  string         `yaml:"read_only_password"`
-	Timeout           *time.Duration `yaml:"timeout"`
+	Timeout          *time.Duration `yaml:"timeout"`
+	OAuth            OAuth          `yaml:"oauth"`
 }
 
 type ACC struct {

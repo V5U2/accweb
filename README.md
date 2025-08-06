@@ -1,10 +1,19 @@
-# Assetto Corsa Competizione Server Web Interface
+# Assetto Corsa Competizione Server Web Interface (Enhanced Auth Fork)
 
-[![Discord Shield](https://discordapp.com/api/guilds/913752018588422174/widget.png?style=shield)](https://discord.gg/AVWdF56t6c)
-[![CircleCI](https://circleci.com/gh/assetto-corsa-web/accweb.svg?style=svg)](https://circleci.com/gh/assetto-corsa-web/accweb)
-[![Go Report Card](https://goreportcard.com/badge/github.com/assetto-corsa-web/accweb)](https://goreportcard.com/report/github.com/assetto-corsa-web/accweb)
+This is a fork of [accweb](https://github.com/assetto-corsa-web/accweb) with enhanced authentication features. The original project was created by the Assetto Corsa Web team.
 
-The successor of [acweb](https://github.com/assetto-corsa-web/acweb)! accweb lets you manage your Assetto Corsa Competizione servers via a nice and simple web interface. You can start, stop and configure server instances and monitor their status.
+[![Go Report Card](https://goreportcard.com/badge/github.com/V5U2/accweb)](https://goreportcard.com/report/github.com/V5U2/accweb)
+
+ACCWeb lets you manage your Assetto Corsa Competizione servers via a nice and simple web interface. You can start, stop and configure server instances and monitor their status. This fork adds flexible authentication options including OAuth support.
+
+## What's New in This Fork
+
+* Flexible authentication modes:
+  * Standard password-based authentication (original behavior)
+  * OAuth2 authentication support (new)
+  * No authentication mode for trusted environments
+* Easy configuration through environment variables
+* Full compatibility with the original version
 
 ## Table of contents
 
@@ -29,10 +38,14 @@ The successor of [acweb](https://github.com/assetto-corsa-web/acweb)! accweb let
 * copy server configurations
 * import/export server configuration files
 * delete server configurations
-* three different permissions: admin, mod and read only (using three different passwords)
+* flexible authentication options:
+    * standard mode: three different permission levels (admin, mod, read-only) using passwords
+    * OAuth mode: authentication through providers like GitHub or Google
+    * no-auth mode: for trusted environments or when using external authentication
 * easy setup
     * no database required
     * simple configuration using environment variables
+    * Docker support with all authentication options
     
 ## Changelog
 <a name="changelog" />
@@ -43,16 +56,48 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 accweb is installed by extracting the zip on your server, modifing the YAML configuration file to your needs and starting it in a terminal.
 
-### Manuall installation
+### Authentication Configuration
+
+The application supports three authentication modes that can be configured in `config.yml`:
+
+1. **Standard Authentication** (default)
+   ```yaml
+   auth:
+     mode: standard
+     admin_password: your_admin_password
+     moderator_password: your_mod_password
+     read_only_password: your_readonly_password
+     timeout: 5h
+   ```
+
+2. **OAuth Authentication**
+   ```yaml
+   auth:
+     mode: oauth
+     timeout: 5h
+     oauth:
+       provider: "github"  # or "google"
+       client_id: "your_client_id"
+       client_secret: "your_client_secret"
+       callback_url: "https://your-domain/api/auth/oauth/callback"
+   ```
+
+3. **No Authentication**
+   ```yaml
+   auth:
+     mode: none
+   ```
+
+### Manual Installation
 
 1. download the latest release from the release section on GitHub
 2. extract the zip file on your server
-3. edit the `config.yml` to match your needs
+3. edit the `config.yml` to match your needs and configure authentication
 4. open a terminal
 5. change directory to the accweb installation location
 6. start accweb using `./accweb` on Linux and `accweb.exe` on Windows
-8. leave the terminal open (or start in background using screens on Linux for example)
-9. visit the server IP/domain and port you've configured, for example: http://example.com:8080
+7. leave the terminal open (or start in background using screens on Linux for example)
+8. visit the server IP/domain and port you've configured, for example: http://example.com:8080
 
 I recommend to setup an SSL certificate, but that's out of scope for this instructions. You can enable a certificate inside the `config.yml`.
 
@@ -60,9 +105,29 @@ I recommend to setup an SSL certificate, but that's out of scope for this instru
 
 ## Docker 
 
-Please visite our [Docker Hub repository](https://hub.docker.com/r/accweb/accweb) for more information.
+This fork is available on Docker Hub at `v5u2/accweb`. You can configure authentication using environment variables:
 
-https://hub.docker.com/r/accweb/accweb
+```bash
+# Standard authentication (default)
+docker run -e ACCWEB_AUTH_MODE=standard \
+  -e ACCWEB_ADMIN_PASSWORD=admin \
+  -e ACCWEB_MOD_PASSWORD=mod \
+  -e ACCWEB_RO_PASSWORD=readonly \
+  v5u2/accweb
+
+# OAuth authentication
+docker run -e ACCWEB_AUTH_MODE=oauth \
+  -e ACCWEB_OAUTH_PROVIDER=github \
+  -e ACCWEB_OAUTH_CLIENT_ID=your_client_id \
+  -e ACCWEB_OAUTH_CLIENT_SECRET=your_client_secret \
+  -e ACCWEB_OAUTH_CALLBACK_URL=https://your-domain/api/auth/oauth/callback \
+  v5u2/accweb
+
+# No authentication
+docker run -e ACCWEB_AUTH_MODE=none v5u2/accweb
+```
+
+The original version is still available at [accweb/accweb](https://hub.docker.com/r/accweb/accweb) if you prefer the standard authentication only.
 
 ## Backup
 

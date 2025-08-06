@@ -116,7 +116,9 @@ func setupRouters(r *gin.Engine, sM *server_manager.Service, config *cfg.Config)
 	authMW := setupAuthRouters(r, config)
 
 	api := r.Group("/api")
-	api.Use(authMW.MiddlewareFunc())
+	if authMW != nil {
+		api.Use(authMW.MiddlewareFunc())
+	}
 
 	api.GET("/servers", h.ListServers)
 	api.GET("/metadata", h.Metadata)
@@ -158,6 +160,28 @@ type User struct {
 }
 
 func setupAuthRouters(r *gin.Engine, config *cfg.Config) *jwt.GinJWTMiddleware {
+	// If auth mode is none, return nil middleware
+	if config.Auth.Mode == cfg.AuthModeNone {
+		return nil
+	}
+
+	// Initialize OAuth handlers if needed
+	if config.Auth.Mode == cfg.AuthModeOAuth {
+		oauthManager, err := NewOAuthManager(
+			config.Auth.OAuth.Provider,
+			config.Auth.OAuth.ClientID,
+			config.Auth.OAuth.ClientSecret,
+			config.Auth.OAuth.CallbackURL,
+		)
+		if err != nil {
+			logrus.WithError(err).Fatal("failed to initialize OAuth")
+		}
+
+		// Add OAuth routes
+		r.GET("/api/auth/oauth/login", oauthManager.HandleLogin)
+		r.GET("/api/auth/oauth/callback", oauthManager.HandleCallback)
+	}
+
 	// the jwt middleware
 	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
 		TokenLookup:      "header:Authorization,query:token",
@@ -189,13 +213,27 @@ func setupAuthRouters(r *gin.Engine, config *cfg.Config) *jwt.GinJWTMiddleware {
 			}
 		},
 		Authenticator: func(c *gin.Context) (interface{}, error) {
+			if config.Auth.Mode == cfg.AuthModeNone {
+				return &User{
+					UserName: "anonymous",
+					Admin:    true,
+					Mod:      true,
+					ReadOnly: true,
+				}, nil
+			}
+
+			// OAuth authentication is handled by the OAuth callback handler
+			if config.Auth.Mode == cfg.AuthModeOAuth {
+				return nil, jwt.ErrFailedAuthentication
+			}
+
+			// Standard password authentication
 			var loginVals LoginPayload
 			if err := c.ShouldBind(&loginVals); err != nil {
 				return "", jwt.ErrMissingLoginValues
 			}
 
 			password := loginVals.Password
-
 			var u *User
 
 			isAdmin := password == config.Auth.AdminPassword

@@ -37,9 +37,14 @@ ENV ACCWEB_HOST=0.0.0.0:8080 \
 	ACCWEB_ENABLE_TLS=false \
 	ACCWEB_CERT_FILE=/sslcerts/certificate.crt \
 	ACCWEB_PRIV_FILE=/sslcerts/private.key \
+	ACCWEB_AUTH_MODE=standard \
 	ACCWEB_ADMIN_PASSWORD=weakadminpassword \
 	ACCWEB_MOD_PASSWORD=weakmodpassword \
 	ACCWEB_RO_PASSWORD=weakropassword \
+	ACCWEB_OAUTH_PROVIDER="" \
+	ACCWEB_OAUTH_CLIENT_ID="" \
+	ACCWEB_OAUTH_CLIENT_SECRET="" \
+	ACCWEB_OAUTH_CALLBACK_URL="" \
 	ACCWEB_LOGLEVEL=info \
 	ACCWEB_CORS=*
 

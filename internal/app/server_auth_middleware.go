@@ -4,12 +4,12 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/assetto-corsa-web/accweb/internal/pkg/cfg"
 	"github.com/gin-gonic/gin"
-	"github.com/V5U2/accweb/internal/pkg/cfg"
 )
 
 var (
-	ErrForbidden = errors.New("access denied")
+	ErrForbidden       = errors.New("access denied")
 	ErrInvalidAuthMode = errors.New("invalid authentication mode")
 )
 

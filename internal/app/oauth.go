@@ -1,3 +1,5 @@
+// Package app provides the main application functionality including authentication
+// and server management for the ACCWeb application.
 package app
 
 import (
@@ -16,7 +18,7 @@ import (
 
 var (
 	ErrUnsupportedProvider = errors.New("unsupported OAuth provider")
-	ErrMissingToken       = errors.New("missing OAuth token")
+	ErrMissingToken        = errors.New("missing OAuth token")
 )
 
 // oauthStateString is used to prevent CSRF
@@ -73,7 +75,7 @@ func (m *OAuthManager) HandleCallback(c *gin.Context) {
 	// Store token in session or cookie
 	c.SetCookie("oauth_token", token.AccessToken, int(token.Expiry.Sub(token.Expiry).Seconds()),
 		"/", "", true, true)
-	
+
 	c.Redirect(http.StatusTemporaryRedirect, "/")
 }
 
@@ -86,7 +88,7 @@ func GetUserFromOAuth(c *gin.Context) (*User, error) {
 	// TODO: Implement user info fetching from OAuth provider
 	// This is a placeholder implementation
 	return &User{
-		Admin: true,  // You should implement proper role mapping based on your requirements
+		Admin: true, // You should implement proper role mapping based on your requirements
 		Mod:   true,
 	}, nil
 }

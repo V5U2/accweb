@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.20.0
+### Added
+* Flexible authentication modes:
+  * Standard password-based authentication (original behavior)
+  * OAuth2 authentication support for GitHub and Google
+  * No-auth mode for trusted environments
+* New configuration options in `config.yml` for authentication modes
+* Docker environment variables for authentication configuration
+* Comprehensive documentation for all authentication modes
+
+### Changed
+* Refactored authentication middleware to support multiple auth modes
+* Updated Docker configuration to support new authentication options
+* Removed Discord server references and related links
+
 ## 1.25.1
 * makes majority of the entrylist fields optional [#278](https://github.com/assetto-corsa-web/accweb/pull/278)
 * sorting nationalities, tracks and cars lists

@@ -26,7 +26,6 @@ ACCWeb lets you manage your Assetto Corsa Competizione servers via a nice and si
 7. [Build release](#build-release)
 8. [Links](#links)
 9. [License](#license)
-10. [ACCWeb Discord Server](#accweb-discord-server)
 
 
 ## Features
@@ -186,9 +185,3 @@ This will create a directory `releases/accweb_1.2.3` containing the release buil
 ## License
 
 MIT
-
-## ACCWeb Discord Server
-
-Join us on our Discord server to get and provide support.
-
-[![ACCWeb Discord](https://discordapp.com/api/guilds/913752018588422174/widget.png?style=banner4)](https://discord.gg/AVWdF56t6c)

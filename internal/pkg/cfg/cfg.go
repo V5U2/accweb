@@ -56,14 +56,14 @@ type OAuth struct {
 }
 
 type Auth struct {
-	Mode             AuthMode        `yaml:"mode"`
-	PublicKeyPath    string         `yaml:"public_key_path"`
-	PrivateKeyPath   string         `yaml:"private_key_path"`
-	AdminPassword    string         `yaml:"admin_password"`
+	Mode              AuthMode       `yaml:"mode"`
+	PublicKeyPath     string         `yaml:"public_key_path"`
+	PrivateKeyPath    string         `yaml:"private_key_path"`
+	AdminPassword     string         `yaml:"admin_password"`
 	ModeratorPassword string         `yaml:"moderator_password"`
 	ReadOnlyPassword  string         `yaml:"read_only_password"`
-	Timeout          *time.Duration `yaml:"timeout"`
-	OAuth            OAuth          `yaml:"oauth"`
+	Timeout           *time.Duration `yaml:"timeout"`
+	OAuth             OAuth          `yaml:"oauth"`
 }
 
 type ACC struct {

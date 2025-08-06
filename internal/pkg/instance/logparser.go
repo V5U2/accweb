@@ -141,9 +141,12 @@ func toLap(l *LiveState, p []string) *LapState {
 	return lap
 }
 
-//             1            2          3  4  5                  6                       7
+//	1            2          3  4  5                  6                       7
+//
 // Lap carId 1005, driverId 0, lapTime 1:53:895, timestampMS 52610019.000000, flags: 8808693760,
-//       9            11           13           14          15     16      17      18
+//
+//	9            11           13           14          15     16      17      18
+//
 // S1 0:36:280, S2 0:40:037, S3 0:37:577, fuel 40.000000, HasCut, InLap, OutLap, SessionOver
 func handleLap(l *LiveState, p []string) {
 	lap := toLap(l, p)

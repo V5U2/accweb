@@ -73,7 +73,7 @@ func (m *OAuthManager) HandleCallback(c *gin.Context) {
 	}
 
 	// Store token in session or cookie
-	c.SetCookie("oauth_token", token.AccessToken, int(token.Expiry.Sub(token.Expiry).Seconds()),
+	c.SetCookie("oauth_token", token.AccessToken, int(time.Until(token.Expiry).Seconds()),
 		"/", "", true, true)
 
 	c.Redirect(http.StatusTemporaryRedirect, "/")
